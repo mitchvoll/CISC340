@@ -46,9 +46,16 @@ void motor::drive(int spd, int dir=0){
       dc_motor_2->setSpeed(100);
     }
     int amount_to_travel = dir*50;
-      delay(amount_to_travel);
+    delay(amount_to_travel);
+    dc_motor_1->setSpeed(0);
+    dc_motor_2->setSpeed(0);
+  }
+  // move robot after turning
+  dc_motor_1->setSpeed(spd);
+  dc_motor_2->setSpeed(spd);
 }
 
+// return the current speed of the robot
 int motor::spd(){ return current_speed; }
 
 // return current direction relative to start in degrees
