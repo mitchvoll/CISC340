@@ -32,12 +32,21 @@ motor::motor(int pin_1, int pin_2) {
 // robot will first orient itself based on dir then move spd speed for trvl seconds 
 // - param spd: value between 0-255 determines the speed of robot while going straight.
 // - param dir: degrees 0-360 where 0 and 360 are forward and 180 is backwards.
-//   degrees for direction get devided into 8 45 degree segments. Defaults to 0.
-//   but input is given as any value n 0<=n<=360
-// - param trvl: determines how long robot moves forward in seconds.
-//   Defaults to -1 which means indefinite
-void motor::drive(int spd, int dir=0, int trvl=-1){
-//  need to implement  
+//   degrees for direction scale how much the motor travels for turning. Defaults to 0.
+//   Input is given as any value n 0<=n<=360
+void motor::drive(int spd, int dir=0){
+  // do not bother turning the robot dir is 0 or 360
+  if (dir != 0 || dir != 360){
+    // turn robot left
+    if (dir > 180 && dir < 360){
+      dc_motor_1->setSpeed(100);
+    }
+    // turn robot right or backwards
+    if (dir > 0 && dir <= 180){
+      dc_motor_2->setSpeed(100);
+    }
+    int amount_to_travel = dir*50;
+      delay(amount_to_travel);
 }
 
 int motor::spd(){ return current_speed; }
@@ -50,7 +59,6 @@ void motor::spin_move(){
   dc_motor_1->run(FORWARD);
   dc_motor_2->setSpeed(100);
   dc_motor_2->run(BACKWARD);
-  delay(4000);
 }
 
 

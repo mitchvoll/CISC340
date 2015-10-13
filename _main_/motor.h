@@ -20,7 +20,7 @@
 class motor{
   public:
     motor(int dc_pin_1, int dc_pin_2);
-    void drive(int spd, int dir, int trvl);
+    void drive(int spd, int dir);
     int spd();
     int dir();
     void spin_move();
