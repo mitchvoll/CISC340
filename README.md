@@ -14,6 +14,7 @@ The entire folder compiles so that functions written in each file are usable in 
   - motor
     - Adafruit motor shield - https://github.com/ladyada/Adafruit_Motor_Shield_V2_Library/archive/master.zip 
   - led
+    - Adafruit NeoPixel - https://github.com/adafruit/Adafruit_NeoPixel/archive/master.zip
   - sensor
   - communication
 
