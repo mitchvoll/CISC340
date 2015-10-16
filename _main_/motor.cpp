@@ -22,6 +22,7 @@ motor::motor(int pin_1, int pin_2) {
   
   // create motor shield object
   afms = Adafruit_MotorShield();
+  afms.begin();
   
   // create dc motor objects for each motor
   dc_motor_1 = afms.getMotor(pin_1);
@@ -62,9 +63,10 @@ int motor::spd(){ return current_speed; }
 int motor::dir(){ return current_dir; }
 
 void motor::spin_move(){
-  dc_motor_1->setSpeed(100);
+  Serial.print("spin move");
+  dc_motor_1->setSpeed(255);
   dc_motor_1->run(FORWARD);
-  dc_motor_2->setSpeed(100);
+  dc_motor_2->setSpeed(255);
   dc_motor_2->run(BACKWARD);
 }
 
