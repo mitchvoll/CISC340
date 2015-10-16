@@ -1,27 +1,3 @@
-//Constant to store the digital pin to read pulse from
-//This value will not change
-const int pulsePin = 2; // attach pin 2 on the arduino to pin 2 on the sensor; don't attach anything to pin 4 on the sensor
-
-// below is for the other 2 sensors
-// pins to receive echo pulse
-#define ECHOPIN_L 2
-#define ECHOPIN_R 2
-
-// pins to send trigger pulse
-#define TRIGPIN_L 3
-#define TRIGPIN_R 3
-
-void setup() {
-  //Opening the serial connection 
-  Serial.begin(9600);
-
-  // setup the other two sensors, designating input and output
-  pinMode(ECHOPIN_L, INPUT);
-  pinMode(TRIGPIN_L, OUTPUT);
-  pinMode(ECHOPIN_R, INPUT);
-  pinMode(TRIGPIN_R, OUTPUT);
-}
-
 // maxbotix ultrasonic sensor
 long sensorCenter() {
   long pulse;

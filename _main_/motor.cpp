@@ -40,18 +40,23 @@ void motor::drive(int spd, int dir=0){
   if (dir != 0 || dir != 360){
     // turn robot left
     if (dir > 180 && dir < 360){
+      dc_motor_1->run(BACKWARD);
       dc_motor_1->setSpeed(100);
     }
     // turn robot right or backwards
     if (dir > 0 && dir <= 180){
+      dc_motor_1->run(BACKWARD);
       dc_motor_2->setSpeed(100);
     }
-    int amount_to_travel = dir*50;
+    int amount_to_travel = dir*8;
     delay(amount_to_travel);
     dc_motor_1->setSpeed(0);
     dc_motor_2->setSpeed(0);
   }
+  Serial.println("driving straight");
   // move robot after turning
+  dc_motor_1->run(BACKWARD);
+  dc_motor_2->run(BACKWARD);
   dc_motor_1->setSpeed(spd);
   dc_motor_2->setSpeed(spd);
 }
@@ -64,9 +69,9 @@ int motor::dir(){ return current_dir; }
 
 void motor::spin_move(){
   Serial.print("spin move");
-  dc_motor_1->setSpeed(255);
+  dc_motor_1->setSpeed(50);
   dc_motor_1->run(FORWARD);
-  dc_motor_2->setSpeed(255);
+  dc_motor_2->setSpeed(50);
   dc_motor_2->run(BACKWARD);
 }
 
