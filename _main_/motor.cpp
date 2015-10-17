@@ -2,7 +2,7 @@
  * CISC340 FALL 2015 - Project 1
  * motor program to provide functions for maneuvering robot
  * Mitch Vollebregt - 07401124
- * Mike Leroux - <STUDENTNUM>
+ * Mike Leroux - 10012715
  * Greg Slasor - <STUDENTNUM>
  */ 
 
