@@ -40,16 +40,22 @@ void motor::drive(int spd, int dir=0){
   if (dir != 0 || dir != 360){
     // turn robot left
     if (dir > 180 && dir < 360){
-      dc_motor_1->run(BACKWARD);
-      dc_motor_1->setSpeed(100);
+      dc_motor_1->setSpeed(0); // pivot inside wheel
+      // run outside wheel
+      dc_motor_2->run(BACKWARD);
+      dc_motor_2->setSpeed(100);
     }
     // turn robot right or backwards
     if (dir > 0 && dir <= 180){
+      dc_motor_2->setSpeed(0); // pivot inside wheel
+      // run outside wheel
       dc_motor_1->run(BACKWARD);
-      dc_motor_2->setSpeed(100);
+      dc_motor_1->setSpeed(100);
     }
-    int amount_to_travel = dir*8;
+    // wait time for desired turn    
+    int amount_to_travel = dir*9;
     delay(amount_to_travel);
+    // stop motors after turn
     dc_motor_1->setSpeed(0);
     dc_motor_2->setSpeed(0);
   }

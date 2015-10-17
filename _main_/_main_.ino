@@ -42,12 +42,15 @@ void setup() {
 
   //  motor
   motor wheels(1,2);
-//  wheels.spin_move();
-  wheels.drive(100,0);
-  delay(3000);
   wheels.drive(0,0);
-  delay(50);
-  wheels.drive(50,180);
+//  wheels.drive(100,0);
+//  delay(3000);
+//  wheels.drive(0,0);
+//  delay(50);
+//  wheels.drive(100,180);
+//  delay(1000);
+//  wheels.drive(0,0);
+  
   
 }
 
