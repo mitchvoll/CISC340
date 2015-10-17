@@ -39,16 +39,17 @@ void Motor::init(){
 //   Input is given as any value n 0<=n<=360
 void Motor::drive(int spd, int dir=0){
   // do not bother turning the robot dir is 0 or 360
-  if (dir != 0 || dir != 360){
+  if (dir != 0 && dir != 360){
     // turn robot left
     if (dir > 180 && dir < 360){
+      dir = (dir-360)*-1;
       dc_motor_1->setSpeed(0); // pivot inside wheel
       // run outside wheel
       dc_motor_2->run(BACKWARD);
       dc_motor_2->setSpeed(100);
     }
     // turn robot right or backwards
-    if (dir > 0 && dir <= 180){
+    else if (dir > 0 && dir <= 180){
       dc_motor_2->setSpeed(0); // pivot inside wheel
       // run outside wheel
       dc_motor_1->run(BACKWARD);
@@ -61,7 +62,8 @@ void Motor::drive(int spd, int dir=0){
     dc_motor_1->setSpeed(0);
     dc_motor_2->setSpeed(0);
   }
-  Serial.println("driving straight");
+//  Serial.println("turning dir: " + String(dir));
+//  Serial.println("driving straight");
   // move robot after turning
   dc_motor_1->run(BACKWARD);
   dc_motor_2->run(BACKWARD);
@@ -75,11 +77,10 @@ int Motor::spd(){ return current_speed; }
 // return current direction relative to start in degrees
 int Motor::dir(){ return current_dir; }
 
-void Motor::spin_move(){
-  Serial.print("spin move");
-  dc_motor_1->setSpeed(50);
+void Motor::pivot(){
+  dc_motor_1->setSpeed(100);
   dc_motor_1->run(FORWARD);
-  dc_motor_2->setSpeed(50);
+  dc_motor_2->setSpeed(100);
   dc_motor_2->run(BACKWARD);
 }
 

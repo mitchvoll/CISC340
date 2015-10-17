@@ -22,8 +22,8 @@ Led led(8);   // create led object and set input pin
 Motor wheels(1,2); // declare motor object
   
 long previousTime = millis();
-int currentLedLit = 0;
-const int green[3] = {0,200,0};
+int currentLedLit = 0; 
+int green[3] = {0,200,0};
 int lightInterrupted = 0;
 
 
@@ -40,7 +40,7 @@ void setup() {
 
   
   wheels.init(); // init Motor class
-  wheels.drive(100,0);
+  wheels.drive(50,0);
   
 }
 
@@ -54,20 +54,22 @@ void loop() {
   Serial.println("right: " + String(right));
   Serial.println("center: " + String(center));
   delay(500);
+  
 
   long currentTime = millis();
-  if(currentTime - previousTime > 500 && lightInterrupted == 0){
+  if(lightInterrupted == 0){
     led.setAll(0,green);
     led.setLed(currentLedLit, 1, green);
     currentLedLit+=1;
     if(currentLedLit >=16) currentLedLit = 0;
   }
+  previousTime = millis();
   
   long cmCenter = sensorCenter();
   long cmLeft = sensorLeft();
   long cmRight = sensorRight();
 
-  if ((cmCenter < 20) || (cmLeft < 20) || (cmRight < 20)) { // less than 20cm from wall
+  if ((cmCenter < 30) || (cmLeft < 30) || (cmRight < 30)) { // less than 30cm from wall
     if (cmRight > cmLeft) { // more space on the right
       lightRight();
       turnRight();
@@ -77,11 +79,12 @@ void loop() {
       turnLeft();
     }  
   } 
-  else if ((cmCenter < 30) || (cmLeft < 30) || (cmRight < 30)) { // less than 30cm from wall
+  else if ((cmCenter < 50) || (cmLeft < 50) || (cmRight < 50)) { // less than 30cm from wall
     lightWall();
   }
   else { // further than 30cm from wall
-    lightNormal();
+//    lightNormal();
+    lightInterrupted = 0;
   }
 
   //testing led ring
@@ -114,23 +117,24 @@ void lightWall() { // light when wall is too near
   led.setAll(1,color);
 } // end lightWall
 
-void lightNormal() { // light for regular driving 
-  
-} //end lightNormal
+//void lightNormal() { // light for regular driving 
+//  
+//} //end lightNormal
 
 void lightLeft() { // light for turning left
   lightInterrupted = 1;
-  int color[3]={0,200,0};
+  int color[3]={228,255,46};
   led.setAll(0,color);
   led.setRange(6,13,1,color);
 } // end lightLeft
 
 void lightRight() { // light for truring right
   lightInterrupted = 1;
-  int color[3]={0,200,0};
+  int color[3]={228,255,46};
   led.setAll(0,color);
-  led.setRange(5,14,1,color);
- 
+  led.setRange(0,5,1,color);
+  led.setRange(14,15,1,color);
+// 
 } // end lightRight
 
 
