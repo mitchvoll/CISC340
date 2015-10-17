@@ -20,6 +20,12 @@
 
 Led led(8);   // create led object and set input pin
 Motor wheels(1,2); // declare motor object
+  
+long previousTime = millis();
+int currentLedLit = 0;
+const int green[3] = {0,200,0};
+int lightInterrupted = 0;
+
 
 void setup() {
   Serial.begin(9600);
@@ -48,6 +54,14 @@ void loop() {
   Serial.println("right: " + String(right));
   Serial.println("center: " + String(center));
   delay(500);
+
+  long currentTime = millis();
+  if(currentTime - previousTime > 500 && lightInterrupted == 0){
+    led.setAll(0,green);
+    led.setLed(currentLedLit, 1, green);
+    currentLedLit+=1;
+    if(currentLedLit >=16) currentLedLit = 0;
+  }
   
   long cmCenter = sensorCenter();
   long cmLeft = sensorLeft();
@@ -80,6 +94,11 @@ void loop() {
 
 } // end loop
 
+void forward() { // move in a straight line
+  lightInterrupted = 1;
+  
+} // end forward
+
 void turnRight() { // turn slightly to the right
   wheels.drive(100,30);
 } // end trunRight
@@ -89,7 +108,10 @@ void turnLeft() { // turn slightly to the left
 } // end turnLeft
 
 void lightWall() { // light when wall is too near
- 
+  lightInterrupted = 1;
+  int color[3]={200,0,0};
+  led.setAll(0,color);
+  led.setAll(1,color);
 } // end lightWall
 
 void lightNormal() { // light for regular driving 
@@ -97,11 +119,17 @@ void lightNormal() { // light for regular driving
 } //end lightNormal
 
 void lightLeft() { // light for turning left
-  
+  lightInterrupted = 1;
+  int color[3]={0,200,0};
+  led.setAll(0,color);
+  led.setRange(6,13,1,color);
 } // end lightLeft
 
 void lightRight() { // light for truring right
-
+  lightInterrupted = 1;
+  int color[3]={0,200,0};
+  led.setAll(0,color);
+  led.setRange(5,14,1,color);
  
 } // end lightRight
 
