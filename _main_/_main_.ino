@@ -52,17 +52,73 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+   // put your main code here, to run repeatedly:
 
-  long test = sensorLeft();
-  Serial.println("test: " + String(test));
+  //long test = sensorLeft();
+  //Serial.println("test: " + String(test));
+  
+  long cmCenter = sensorCenter();
+  long cmLeft = sensorLeft();
+  long cmRight = sensorRight();
+
+  if ((cmCenter < 20) || (cmLeft < 20) || (cmRight < 20)) { // less than 20cm from wall
+    if (cmRight > cmLeft) { // more space on the right
+      lightRight();
+      turnRight();
+    }
+    else { // more space of the left
+      lightLeft();
+      turnLeft();
+    }  
+  } 
+  else if ((cmCenter < 30) || (cmLeft < 30) || (cmRight < 30)) { // less than 30cm from wall
+    lightWall();
+    forward();
+  }
+  else { // further than 30cm from wall
+    lightNormal();
+    forward();
+  }
 
   //testing led ring
-  int color[3]={100,255,100};
-  led.setAll(1,color);
-  delay(500);
-  led.setAll(0,color);
-  delay(500);
-  led.setAll(0,color);
+  //int color[3]={100,255,100};
+  //led.setAll(1,color);
+  //delay(500);
+  //led.setAll(0,color);
+  //delay(500);
+  //led.setAll(0,color);
 
-}
+} // end loop
+
+void forward() { // move in a straight line
+  
+} // end forward
+
+void turnRight() { // turn slightly to the right
+  
+} // end trunRight
+
+void turnLeft() { // turn slightly to the left
+  
+} // end turnLeft
+
+void lightWall() { // light when wall is too near
+ 
+} // end lightWall
+
+void lightNormal() { // light for regular driving 
+  
+} //end lightNormal
+
+void lightLeft() { // light for turning left
+  
+} // end lightLeft
+
+void lightRight() { // light for truring right
+
+ 
+} // end lightRight
+
+
+
+
