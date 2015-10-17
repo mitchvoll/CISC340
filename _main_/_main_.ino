@@ -40,7 +40,7 @@ void setup() {
 
   
   wheels.init(); // init Motor class
-  wheels.drive(50,0);
+  wheels.drive(100,0);
   
 }
 
@@ -53,8 +53,6 @@ void loop() {
   Serial.println("left: " + String(left));
   Serial.println("right: " + String(right));
   Serial.println("center: " + String(center));
-  delay(500);
-  
 
   long currentTime = millis();
   if(lightInterrupted == 0){
@@ -70,7 +68,9 @@ void loop() {
   long cmRight = sensorRight();
 
   if ((cmCenter < 30) || (cmLeft < 30) || (cmRight < 30)) { // less than 30cm from wall
-    if (cmRight > cmLeft) { // more space on the right
+    if ((cmCenter < 15) || (cmLeft < 15) || (cmRight < 15))
+      wheels.pivot();
+    else if (cmRight > cmLeft) { // more space on the right
       lightRight();
       turnRight();
     }
@@ -79,26 +79,19 @@ void loop() {
       turnLeft();
     }  
   } 
-  else if ((cmCenter < 50) || (cmLeft < 50) || (cmRight < 50)) { // less than 30cm from wall
-    lightWall();
+  else if ((cmCenter < 100) || (cmLeft < 100) || (cmRight < 100)) { // less than 30cm from wall
+    lightWall(cmCenter, cmLeft, cmRight);
+    forward();
   }
   else { // further than 30cm from wall
-//    lightNormal();
     lightInterrupted = 0;
+    forward();
   }
-
-  //testing led ring
-  //int color[3]={100,255,100};
-  //led.setAll(1,color);
-  //delay(500);
-  //led.setAll(0,color);
-  //delay(500);
-  //led.setAll(0,color);
-
 } // end loop
 
 void forward() { // move in a straight line
   lightInterrupted = 1;
+  wheels.drive(100, 0);
   
 } // end forward
 
@@ -110,17 +103,30 @@ void turnLeft() { // turn slightly to the left
   wheels.drive(100,330);
 } // end turnLeft
 
-void lightWall() { // light when wall is too near
+void lightWall(long cmCenter, long cmLeft, long cmRight) { // light when wall is too near
+  
   lightInterrupted = 1;
   int color[3]={200,0,0};
   led.setAll(0,color);
   led.setAll(1,color);
+  
+  int color1[3] = {int(cmRight)*5, 100,0};
+  int color2[3] = {int(cmCenter)*5, 100,0};
+  int color3[3] = {int(cmLeft)*5, 100,0};
+  
+  led.setRange(2,4,1, color1);
+  led.setRange(5,7,1, color2);
+  led.setRange(8,9,1, color3);
 } // end lightWall
 
-//void lightNormal() { // light for regular driving 
-//  
-//} //end lightNormal
-
+void lightPivot(){
+  lightInterrupted = 1;
+  int color[3]={200,0,0};
+  led.setAll(0,color);
+  led.setRange(9,13,1,color);
+  led.setRange(14,15,1,color);
+  led.setRange(0,1,1,color);
+}
 void lightLeft() { // light for turning left
   lightInterrupted = 1;
   int color[3]={228,255,46};

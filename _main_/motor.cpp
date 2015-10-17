@@ -71,18 +71,28 @@ void Motor::drive(int spd, int dir=0){
   dc_motor_2->setSpeed(spd);
 }
 
+void Motor::pivot(){
+  dc_motor_1->run(FORWARD);
+  dc_motor_2->run(FORWARD);
+  //  move backwards a little
+  dc_motor_1->setSpeed(100);
+  dc_motor_2->setSpeed(100);
+  delay(200);
+
+  //  pivot
+  dc_motor_1->run(BACKWARD);
+  dc_motor_2->run(FORWARD);
+  delay(9*135);
+  // continue driving forward
+  drive(100,0);
+  
+}
+
 // return the current speed of the robot
 int Motor::spd(){ return current_speed; }
 
 // return current direction relative to start in degrees
 int Motor::dir(){ return current_dir; }
-
-void Motor::pivot(){
-  dc_motor_1->setSpeed(100);
-  dc_motor_1->run(FORWARD);
-  dc_motor_2->setSpeed(100);
-  dc_motor_2->run(BACKWARD);
-}
 
 
 

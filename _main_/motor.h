@@ -24,7 +24,7 @@ class Motor{
     void init();
     int spd();
     int dir();
-    void spin_move();
+    void pivot();
   private:
     int dc_pin_1;
     int dc_pin_2;
