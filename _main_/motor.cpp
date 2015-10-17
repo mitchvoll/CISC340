@@ -16,17 +16,19 @@
 #include "utility/Adafruit_PWMServoDriver.h"
 
 // constructor
-motor::motor(int pin_1, int pin_2) {
+Motor::Motor(int pin_1, int pin_2) {
   dc_pin_1 = pin_1;
   dc_pin_2 = pin_2;
   
   // create motor shield object
   afms = Adafruit_MotorShield();
+}
+
+void Motor::init(){
   afms.begin();
-  
   // create dc motor objects for each motor
-  dc_motor_1 = afms.getMotor(pin_1);
-  dc_motor_2 = afms.getMotor(pin_2);
+  dc_motor_1 = afms.getMotor(dc_pin_1);
+  dc_motor_2 = afms.getMotor(dc_pin_2);
 }
 
 // drive function controls the speed, direction, and travel distance of the robot
@@ -35,7 +37,7 @@ motor::motor(int pin_1, int pin_2) {
 // - param dir: degrees 0-360 where 0 and 360 are forward and 180 is backwards.
 //   degrees for direction scale how much the motor travels for turning. Defaults to 0.
 //   Input is given as any value n 0<=n<=360
-void motor::drive(int spd, int dir=0){
+void Motor::drive(int spd, int dir=0){
   // do not bother turning the robot dir is 0 or 360
   if (dir != 0 || dir != 360){
     // turn robot left
@@ -68,12 +70,12 @@ void motor::drive(int spd, int dir=0){
 }
 
 // return the current speed of the robot
-int motor::spd(){ return current_speed; }
+int Motor::spd(){ return current_speed; }
 
 // return current direction relative to start in degrees
-int motor::dir(){ return current_dir; }
+int Motor::dir(){ return current_dir; }
 
-void motor::spin_move(){
+void Motor::spin_move(){
   Serial.print("spin move");
   dc_motor_1->setSpeed(50);
   dc_motor_1->run(FORWARD);

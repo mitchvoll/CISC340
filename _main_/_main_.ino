@@ -7,12 +7,7 @@
 #include <Adafruit_MotorShield.h>
 #include <Adafruit_NeoPixel.h>
 
-Led led(6);   // create led object and set input pin
-
-// sensor
-//Constant to store the digital pin to read pulse from
-//This value will not change
-#define pulsePin 2 // attach pin 2 on the arduino to pin 2 on the sensor; don't attach anything to pin 4 on the sensor
+#define pulsePin 7 // attach pin 2 on the arduino to pin 2 on the sensor; don't attach anything to pin 4 on the sensor
 
 // below is for the other 2 sensors
 // pins to receive echo pulse
@@ -22,17 +17,14 @@ Led led(6);   // create led object and set input pin
 // pins to send trigger pulse
 #define TRIGPIN_L 4
 #define TRIGPIN_R 6
-  
-  
+
+Led led(8);   // create led object and set input pin
+Motor wheels(1,2); // declare motor object
 
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(9600);
-  Serial.print("main.ino - setup()");
-
-  //  sensor
   // Opening the serial connection 
-  Serial.begin(9600);
+  Serial.print("main.ino - setup()");
 
   // setup the other two sensors, designating input and output
   pinMode(ECHOPIN_L, INPUT);
@@ -40,25 +32,22 @@ void setup() {
   pinMode(ECHOPIN_R, INPUT);
   pinMode(TRIGPIN_R, OUTPUT);
 
-  //  motor
-  motor wheels(1,2);
-  wheels.drive(0,0);
-//  wheels.drive(100,0);
-//  delay(3000);
-//  wheels.drive(0,0);
-//  delay(50);
-//  wheels.drive(100,180);
-//  delay(1000);
-//  wheels.drive(0,0);
   
+  wheels.init(); // init Motor class
+  wheels.drive(100,0);
   
 }
 
 void loop() {
    // put your main code here, to run repeatedly:
 
-  //long test = sensorLeft();
-  //Serial.println("test: " + String(test));
+  long left = sensorLeft();
+  long right = sensorRight();
+  long center = sensorCenter();
+  Serial.println("left: " + String(left));
+  Serial.println("right: " + String(right));
+  Serial.println("center: " + String(center));
+  delay(500);
   
   long cmCenter = sensorCenter();
   long cmLeft = sensorLeft();
@@ -76,11 +65,9 @@ void loop() {
   } 
   else if ((cmCenter < 30) || (cmLeft < 30) || (cmRight < 30)) { // less than 30cm from wall
     lightWall();
-    forward();
   }
   else { // further than 30cm from wall
     lightNormal();
-    forward();
   }
 
   //testing led ring
@@ -93,16 +80,12 @@ void loop() {
 
 } // end loop
 
-void forward() { // move in a straight line
-  
-} // end forward
-
 void turnRight() { // turn slightly to the right
-  
+  wheels.drive(100,30);
 } // end trunRight
 
 void turnLeft() { // turn slightly to the left
-  
+  wheels.drive(100,330);
 } // end turnLeft
 
 void lightWall() { // light when wall is too near

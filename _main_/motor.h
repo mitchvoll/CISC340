@@ -17,10 +17,11 @@
 #include <Adafruit_MotorShield.h>
 #include "utility/Adafruit_PWMServoDriver.h"
 
-class motor{
+class Motor{
   public:
-    motor(int dc_pin_1, int dc_pin_2);
+    Motor(int dc_pin_1, int dc_pin_2);
     void drive(int spd, int dir);
+    void init();
     int spd();
     int dir();
     void spin_move();
