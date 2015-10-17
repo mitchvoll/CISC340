@@ -90,7 +90,7 @@ void loop() {
 } // end loop
 
 void forward() { // move in a straight line
-  lightInterrupted = 1;
+  lightInterrupted = 0;
   wheels.drive(100, 0);
   
 } // end forward
@@ -110,9 +110,9 @@ void lightWall(long cmCenter, long cmLeft, long cmRight) { // light when wall is
   led.setAll(0,color);
   led.setAll(1,color);
   
-  int color1[3] = {int(cmRight)*5, 100,0};
-  int color2[3] = {int(cmCenter)*5, 100,0};
-  int color3[3] = {int(cmLeft)*5, 100,0};
+  int color1[3] = {255 - int(cmRight)*9, 75,0};
+  int color2[3] = {255 - int(cmCenter)*9, 75,0};
+  int color3[3] = {255 - int(cmLeft)*9, 75,0};
   
   led.setRange(2,4,1, color1);
   led.setRange(5,7,1, color2);
@@ -121,7 +121,7 @@ void lightWall(long cmCenter, long cmLeft, long cmRight) { // light when wall is
 
 void lightPivot(){
   lightInterrupted = 1;
-  int color[3]={200,0,0};
+  int color[3]={0,200,0};
   led.setAll(0,color);
   led.setRange(9,13,1,color);
   led.setRange(14,15,1,color);
