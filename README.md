@@ -1,3 +1,5 @@
+# CISC340_PROJECT_2
+
 # CISC340_PROJECT_1
 All project files are in */\_main\_*. The file *\_main\_.ino* is the main program that contains the navigation logic and component usage logic. The other files are for component functions so we can avoid lots of merge conflicts from working on the same file. 
 
