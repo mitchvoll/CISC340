@@ -26,6 +26,7 @@ The entire folder compiles so that functions written in each file are usable in 
   - \_main\_.ino
   - motor.cpp
   - motor.h
-  - led.ino
+  - led.cpp
+  - led.h
   - sensor.ino
   - communication.ino
