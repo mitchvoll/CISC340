@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>340</title>
+        <link rel="stylesheet" href="styles.css" >
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    </head>
+    <body>
+        <style media="screen">
+            .row{
+            /*background:grey;*/
+
+            }
+
+            body{
+            font-family:Helvetica,Arial;
+            }
+
+            #log_table .row{
+            padding: 3px;
+            border: 1px solid #ddd;
+            width:400px;
+            }
+        </style>
+        <h1>CISC340 IOT</h1>
+
+        <div id="log_table">
+            <!-- <div class='row'>what</div> -->
+        </div>
+
+        <h2>Current Temperature is:<span id="current_temp"></span>°C</h2>
+
+        <script type="text/javascript">
+            window.baseurl = "http://domu.ca:5050";
+
+            window.data  = {};
+            function fetchData(){
+                var route = window.baseurl+"/time";
+                $.get(route,function(txt){
+                    var lines = JSON.parse(txt);
+                    for (var i in lines) {
+                        if(lines[i] in window.data){
+                            // do nothing
+                        }else{
+                            window.data[lines[i]] = true;
+
+                            var date = new Date(parseInt(lines[i])*1000);
+                            var hours = date.getHours();
+                            var minutes = "0" + date.getMinutes();
+                            $("#log_table").prepend("<div class='row'>Doorbell rang at:"+hours + ':' + minutes.substr(-2) +"</div>");
+                        }
+
+                    }
+                });
+
+            }
+            setInterval(fetchData,1000);
+
+            window.tempdata  = {};
+            window.prevTime = -1;
+            function fetchTime(){
+                var route = window.baseurl+"/temp";
+                $.get(route,function(txt){
+                    var lines = JSON.parse(txt);
+                    for (var i in lines) {
+                        var sp = lines[i].split(":");
+                        var time = sp[0];
+                        var temp = sp[1];
+                        if(time == window.prevTime){
+                            // do nothing (should flip the logic)
+                        }else{
+                             window.tempdata[time] = sp;
+                             window.prevTime = time;
+                            $("#current_temp").text(temp);
+                        }
+
+                    }
+                });
+
+            }
+            setInterval(fetchTime,3000);
+
+        </script>
+    </body>
+</html>
