@@ -41,6 +41,10 @@
 
         <h2>Current Temperature is:<span id="current_temp"></span>°C</h2>
 
+        <h3>Current Notification Number: <span id="current_num">6133015848</span></h3>
+        <input type="text" id="get_number">
+        <button type="button" id="change_number">Change number</button>
+
         <script type="text/javascript">
             window.baseurl = "http://domu.ca:5050";
 
@@ -91,6 +95,20 @@
 
             }
             setInterval(fetchTime,3000);
+
+            $("#change_number").on("click", function(){
+                var number = $("#get_number").val();
+                $.get(window.baseurl+"/change_num/"+number, function(data){
+                    $("#get_number").val("");
+                    $("#current_num").text(number);
+                });
+            });
+
+            $(document).ready(function(){
+                $.get(window.baseurl+"/get_num", function(data){
+                    $("#current_num").text(data);
+                });
+            });
 
         </script>
     </body>

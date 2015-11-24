@@ -4,11 +4,12 @@ import time
 import datetime
 import thread
 
-from flask import Flask, request
+from flask import Flask, request, render_template
 
-
+phone_number = '6133015848'
 
 def get_data(thread_name, delay):
+        global phone_number
 	last_value = 0
 	temp_count = 100
 	url = 'https://api-http.littlebitscloud.cc/devices/00e04c223d3e/input'
@@ -16,8 +17,9 @@ def get_data(thread_name, delay):
 
 	r = requests.get(url, headers=headers, stream=True)
 
-	for line in r.iter_lines():
-		if line:
+	for line in r.iter_lines(): 
+                print "phone_number: " + phone_number
+                if line and line[:5] == 'data':
 			current_value = json.loads(line[5:])['payload']['percent']
 			#print current_value
 
@@ -27,7 +29,7 @@ def get_data(thread_name, delay):
 				f = open('time_file.txt', 'a')
 				f.write(str(int(time.time())) + "\n")
 				f.close()
-                                requests.get("http://tw.mitchvollebregt.com/call/6133015848")
+                                requests.get("http://tw.mitchvollebregt.com/call/" + phone_number)
 			# current_value is a temperature. Write to file every 20 times
 			elif temp_count == 100:
 				#print "writing temp"
@@ -36,6 +38,7 @@ def get_data(thread_name, delay):
 				f.close()
 				temp_count = 0
 			elif current_value < 90:
+                                # post temp to cloudbit
 			        requests.post('https://api-http.littlebitscloud.cc/devices/00e04c223d3e/output', headers=headers, data={'percent' : current_value})
 
 			last_value = current_value
@@ -50,6 +53,10 @@ except:
    print "Error: unable to start thread"
 
 app = Flask(__name__)
+
+@app.route("/")
+def index():
+    return render_template('index.html', name=None)
 
 @app.route("/time")
 def get_time():
@@ -68,6 +75,18 @@ def get_temp():
 def test():
 	return "test"
 
+@app.route("/change_num/<number>")
+def change_number(number):
+    global phone_number
+    print "old: " + phone_number
+    phone_number = number
+    print "new: " + phone_number
+    return phone_number
+
+@app.route("/get_num")
+def get_num():
+    global phone_number
+    return phone_number
 
 if __name__ == "__main__":
-    app.run(threaded=True)
+    app.run(debug=True, threaded=True)
