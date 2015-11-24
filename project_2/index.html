@@ -16,13 +16,21 @@
             }
 
             body{
-            font-family:Helvetica,Arial;
+        		padding: 0px;
+        		margin: 0px;
+            	font-family:Helvetica,Arial;
             }
 
             #log_table .row{
-            padding: 3px;
+            padding: 5px;
             border: 1px solid #ddd;
-            width:400px;
+            width: calc(100%-10px);
+            }
+            h1,h2{
+            	margin: 10px;
+            }
+            #current_temp{
+            	font-size: 140%;
             }
         </style>
         <h1>CISC340 IOT</h1>
@@ -48,9 +56,10 @@
                             window.data[lines[i]] = true;
 
                             var date = new Date(parseInt(lines[i])*1000);
+                            var day = date.toDateString();
                             var hours = date.getHours();
                             var minutes = "0" + date.getMinutes();
-                            $("#log_table").prepend("<div class='row'>Doorbell rang at:"+hours + ':' + minutes.substr(-2) +"</div>");
+                            $("#log_table").prepend("<div class='row'>Doorbell rang at: "+day+" - "+hours + ':' + minutes.substr(-2) +"</div>");
                         }
 
                     }
